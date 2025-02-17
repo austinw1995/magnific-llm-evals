@@ -16,10 +16,10 @@ from magnific import Evaluation
 from magnific import TestRunner
 
 async def main():
-    os.environ["OPENAI_API_KEY"] = "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"
-    os.environ["ANTHROPIC_API_KEY"] = "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"
-    os.environ["GROQ_API_KEY"] = "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"
-    os.environ["GEMINI_API_KEY"] = "AIzaSyBJwBl-HFFh4nfGgQBPNchM2r3tzayGO2M"
+    os.environ["OPENAI_API_KEY"] = "..."
+    os.environ["ANTHROPIC_API_KEY"] = "..."
+    os.environ["GROQ_API_KEY"] = "..."
+    os.environ["GEMINI_API_KEY"] = "..."
     # Configure service agent
     service_config_1 = LLMConfig(
         params={

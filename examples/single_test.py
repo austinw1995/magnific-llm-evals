@@ -16,7 +16,7 @@ from magnific import Evaluation
 from magnific import TestRunner
 
 async def main():
-    os.environ["OPENAI_API_KEY"] = "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"
+    os.environ["OPENAI_API_KEY"] = "..."
 
     # Configure service agent
     service_config = LLMConfig(
