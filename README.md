@@ -113,8 +113,8 @@ customer_config_2 = LLMConfig(
 ```
 
 To instantiate a list of conversations for testing, use the LLMConversation class.
-1. type is the type of conversation, either "inbound" or "outbound", inbound is the customer calling in and outbound is the service agent calling out.
-2. first_message is the first message in the conversation by the caller.
+1. type is the type of conversation, either "inbound" (customer calling in) or "outbound" (service agent calling out).
+2. first_message is the first utterance of the caller.
 3. evaluations is a list of user defined evaluations to be performed on the conversation, customize the name of the evaluation and prompt, which specifies the evaluation criteria.
 
 ```
@@ -152,11 +152,11 @@ conversations = [
     ]
 ```
 
-Finally, to run the tests in parallel, with the evaluation criterias (for eval models we only support openai for now), use the TestRunner class.
+Finally, to run the tests in parallel, with the evaluation criterias (for eval models we only support openai for now), use the TestRunner class. max_turns is the maximum number of turns the conversation can have until forced termination.
 
 ```
 runner = TestRunner(eval_model="gpt-4o-mini")
-results = await runner.run_tests(conversations)
+results = await runner.run_tests(conversations, max_turns=20)
 ```
 
 The results will be a dictionary with the test_id as the key and the test result as the value.

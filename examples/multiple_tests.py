@@ -110,7 +110,7 @@ IMPORTANT: Use the tool end_call() only when you are satisfied with your order a
 
     # Run all tests with a specific evaluation model
     runner = TestRunner(eval_model="gpt-4o-mini")
-    results = await runner.run_tests(conversations)
+    results = await runner.run_tests(conversations, max_turns=20)
 
     # Print results
     for test_id, result in results.items():

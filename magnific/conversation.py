@@ -63,7 +63,7 @@ class LLMConversation:
             print(f"Error getting LLM response: {e}")
             return ""
 
-    def have_conversation(self, max_turns: int = 3):
+    def have_conversation(self, max_turns):
         # Start the transcript with conversation type
         self.transcript = f"Starting {self.type} conversation\n\n"
         self.transcript += f"{self.first_speaker}: {self.conversation_history[0]['content']}\n\n"
