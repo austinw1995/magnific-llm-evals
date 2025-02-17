@@ -16,14 +16,12 @@ from magnific import Evaluation
 from magnific import TestRunner
 
 async def main():
-    os.environ["OPENAI_API_KEY"] = "..."
-    os.environ["TOGETHER_API_KEY"] = "..."
-    os.environ["XAI_API_KEY"] = "..."
+    os.environ["OPENAI_API_KEY"] = "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"
 
     # Configure service agent
     service_config = LLMConfig(
         params={
-            "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+            "model": "gpt-4o-mini",
             "temperature": 0.7,
             "max_tokens": 150,
         },
@@ -38,7 +36,7 @@ IMPORTANT: Do not use tool end_call() until all of the customer's questions are 
     # Configure customer agent with different parameters
     customer_config = LLMConfig(
         params={
-            "model": "grok-2-1212"
+            "model": "gpt-4o-mini"
         },
         system_prompt="""You are a hungry customer who wants to order food.
 Your tone is casual and excited.
@@ -50,8 +48,8 @@ IMPORTANT: Use the tool end_call() only when you are satisfied with your order a
     # Create list of conversations to test
     conversations = [
         LLMConversation(
-            service_provider=TogetherAIProvider(config=service_config),
-            customer_provider=XAIProvider(config=customer_config),
+            service_provider=OpenAIProvider(config=service_config),
+            customer_provider=OpenAIProvider(config=customer_config),
             type="inbound",
             first_message="Hi, what's on the menu today?",
             evaluations=[
