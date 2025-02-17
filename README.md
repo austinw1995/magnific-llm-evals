@@ -163,7 +163,7 @@ conversations = [
     ]
 ```
 
-Finally, to run the tests in parallel, with the evaluation criterias (for eval models we only support openai for now), use the TestRunner class. max_turns is the maximum number of turns the conversation can have until forced termination.
+Finally, to run the tests in parallel, with the evaluation criterias (for eval models we only support openai for now), use the TestRunner class. max_turns is the maximum number of turns the conversation can have until forced termination, this is especially useful when end_call_enabled is set to False.
 
 ```
 runner = TestRunner(eval_model="gpt-4o-mini")
