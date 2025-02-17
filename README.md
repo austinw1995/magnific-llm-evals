@@ -159,8 +159,8 @@ runner = TestRunner(eval_model="gpt-4o-mini")
 results = await runner.run_tests(conversations)
 ```
 
-The results will be a dictionary with the test_id as the key and the result as the value.
-An example result based on the conversations above is shown below, where the evaluations output scores and reasons for passing or failing. The LLM configurations of service and customer agents are also included in the result for prompt management purposes.
+The results will be a dictionary with the test_id as the key and the test result as the value.
+An example result based on the conversations above is shown below, where the evaluations output scores and reasons for passing or failing. The transcript, as well as the LLM configurations of service and customer agents are also included in the result for prompt management purposes.
 
 ```
 {
