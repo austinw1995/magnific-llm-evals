@@ -179,7 +179,7 @@ class CerebrasProvider(OpenAIProvider):
 
 class XAIProvider(OpenAIProvider):
     #The following models are supported:
-    #grok-2-latest
+    #grok-2-1212
     def __init__(self, config: LLMConfig):
         self.config = config
         self.client = OpenAI(

@@ -60,7 +60,7 @@ For each provider, the following models are supported:
 | **GroqProvider**      | qwen-2.5-32b<br>deepseek-r1-distill-qwen-32b<br>deepseek-r1-distill-llama-70b<br>llama-3.3-70b-versatile<br>llama-3.1-8b-instant<br>mixtral-8x7b-32768<br>gemma2-9b-it |
 | **DeepSeekProvider**  | deepseek-chat<br>deepseek-reasoner |
 | **CerebrasProvider**  | llama3.1-8b<br>llama-3.3-70b<br>DeepSeek-R1-Distill-Llama-70B |
-| **XAIProvider**       | xgrok-2-latest |
+| **XAIProvider**       | grok-2-1212 |
 | **GeminiProvider**    | gemini-2.0-flash<br>gemini-2.0-flash-lite-preview-02-05<br>gemini-1.5-flash<br>gemini-1.5-flash-8b<br>gemini-1.5-pro |
 
 To set the configuration for a service or customer agent, create a LLMConfig object with the desired parameters.
