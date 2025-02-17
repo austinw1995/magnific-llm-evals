@@ -1,9 +1,7 @@
 import os
-import sys
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import asyncio
-from src.llm_config import LLMConfig
-from src.llm_providers import (
+from magnific import LLMConfig
+from magnific import (
     OpenAIProvider,
     AnthropicProvider,
     TogetherAIProvider,
@@ -13,9 +11,9 @@ from src.llm_providers import (
     XAIProvider,
     GeminiProvider,
 )
-from src.conversation import LLMConversation
-from src.evaluation import Evaluation
-from src.test_runner import TestRunner
+from magnific import LLMConversation
+from magnific import Evaluation
+from magnific import TestRunner
 
 async def main():
     os.environ["OPENAI_API_KEY"] = "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"

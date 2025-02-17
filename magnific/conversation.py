@@ -1,9 +1,8 @@
 import time
 from typing import List, Dict
-from src.llm_config import LLMConfig
-from src.llm_providers import LLMProvider
+from magnific.llm_providers import LLMProvider
 from dataclasses import field
-from src.evaluation import Evaluation
+from magnific.evaluation import Evaluation
 
 class LLMConversation:
     def __init__(self, 

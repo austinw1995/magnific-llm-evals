@@ -3,7 +3,6 @@ from typing import Any, Dict, List, Optional
 from openai.types.chat import ChatCompletionMessageParam
 from pydantic import BaseModel, Field
 from dataclasses import dataclass
-from src.conversation import LLMConversation
 
 class EvaluationResult(BaseModel):
     name: str

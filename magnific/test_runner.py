@@ -1,7 +1,7 @@
 import asyncio
 from typing import List, Dict, Any
-from src.conversation import LLMConversation
-from evaluators.evalrunner import LlmEvaluator
+from magnific.conversation import LLMConversation
+from magnific.evaluators.evalrunner import LlmEvaluator
 import uuid
 
 class TestResult:

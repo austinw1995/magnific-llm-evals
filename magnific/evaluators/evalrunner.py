@@ -2,10 +2,9 @@ import os
 from typing import List, Optional
 from openai import AsyncOpenAI
 from openai.types.chat import ChatCompletionMessageParam
-from evaluators.evaluator import BaseEvaluator, EvaluationResponse, EvaluationResult
-from src.evaluation import Evaluation
+from magnific.evaluators.evaluator import BaseEvaluator, EvaluationResponse, EvaluationResult
 import asyncio
-from src.conversation import LLMConversation
+from magnific.conversation import LLMConversation
 
 class LlmEvaluator(BaseEvaluator):
     def __init__(self, model: str = "gpt-4o-mini"):

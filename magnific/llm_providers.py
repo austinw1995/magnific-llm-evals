@@ -7,7 +7,7 @@ from google.genai import types
 from typing import List, Dict, Optional
 from abc import ABC, abstractmethod
 import os
-from src.llm_config import LLMConfig
+from magnific.llm_config import LLMConfig
 
 class LLMProvider(ABC):
     @abstractmethod
