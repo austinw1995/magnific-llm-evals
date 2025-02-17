@@ -63,8 +63,8 @@ For each provider, the following models are supported:
 | **XAIProvider**       | grok-2-1212 |
 | **GeminiProvider**    | gemini-2.0-flash<br>gemini-2.0-flash-lite-preview-02-05<br>gemini-1.5-flash<br>gemini-1.5-flash-8b<br>gemini-1.5-pro |
 
-To set the configuration for a service or customer agent, create a LLMConfig object with the desired parameters.
-1. params is a dictionary of any parameter supported by the LLM model provider.
+To set the configurations for a service or customer agent (like temperature, max tokens, model, etc.), define a LLMConfig object.
+1. params is a dictionary of any parameter supported by the LLM model provider (can be found in the provider's website/developer documentations).
 2. system_prompt is the instruction task for the LLM agent to follow.
 3. end_call_enabled is a boolean that determines if the LLM should be able to end the call with the function call end_call(). (Note: IMPORTANT texts are highlighted in the system prompt to ensure function call reliability).
 
