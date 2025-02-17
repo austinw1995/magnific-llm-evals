@@ -42,7 +42,7 @@ IMPORTANT: Do not use tool end_call() until all of the customer's questions are 
     # Configure customer agent with different parameters
     customer_config = LLMConfig(
         params={
-            "model": "gpt-4o-mini",
+            "model": "claude-3-5-sonnet-20241022",
             "temperature": 0.9,
             "max_tokens": 100,
         },
@@ -54,22 +54,8 @@ IMPORTANT: Use the tool end_call() only when you are satisfied with your order a
     )
     
     # Create providers with custom configs
-    #service_provider = AnthropicProvider(config=service_config)
-    #customer_provider = AnthropicProvider(config=customer_config)
     service_provider = OpenAIProvider(config=service_config)
-    customer_provider = OpenAIProvider(config=customer_config)
-    #service_provider = TogetherAIProvider(config=service_config)
-    #customer_provider = TogetherAIProvider(config=customer_config)
-    #service_provider = GroqProvider(config=service_config)
-    #customer_provider = GroqProvider(config=customer_config)
-    #service_provider = DeepSeekProvider(config=service_config)
-    #customer_provider = DeepSeekProvider(config=customer_config)
-    #service_provider = CerebrasProvider(config=service_config)
-    #customer_provider = CerebrasProvider(config=customer_config)
-    #service_provider = XAIProvider(config=service_config)
-    #customer_provider = XAIProvider(config=customer_config)
-    #service_provider = GeminiProvider(config=service_config)
-    #customer_provider = GeminiProvider(config=customer_config)
+    customer_provider = AnthropicProvider(config=customer_config)
     
     # Create list of conversations to test
     conversations = [
@@ -92,6 +78,16 @@ IMPORTANT: Use the tool end_call() only when you are satisfied with your order a
                 Evaluation(name="Menu", prompt="The menu should be displayed in a structured format, with each item on a new line."),
                 Evaluation(name="conciseness", prompt="The service agent should be concise.")
             ]
+        ),
+        LLMConversation(
+            service_provider=service_provider,
+            customer_provider=customer_provider,
+            type="inbound",
+            first_message="Hi, I'm so hungry",
+            evaluations=[
+                Evaluation(name="empathy", prompt="The service agent should be empathetic and show understanding of the customer's situation."),
+                Evaluation(name="frustration", prompt="The customer should not be frustrated or annoyed.")
+            ]
         )
     ]
 
@@ -111,6 +107,8 @@ IMPORTANT: Use the tool end_call() only when you are satisfied with your order a
             print(f"Score: {eval_result['score']}")
             print(f"Passed: {eval_result['passed']}")
             print(f"Reason: {eval_result['reason']}")
+
+    print(results)
 
 if __name__ == "__main__":
     asyncio.run(main())
