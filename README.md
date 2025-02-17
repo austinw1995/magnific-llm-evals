@@ -37,6 +37,17 @@ os.environ["XAI_API_KEY"] = "..."
 os.environ["GEMINI_API_KEY"] = "..."
 ```
 
+## Quick Start
+
+To get up and running, run the single_test.py example.
+```
+cd examples
+#Fill in your API key with os.environ["OPENAI_API_KEY"] = "..."
+python3 single_test.py
+```
+
+## Documentation
+
 We support a variety of LLMs through 7 providers, which are OpenAI, Anthropic, TogetherAI, Groq, DeepSeek, Cerebras, XAI, and Google Gemini:
 You can access different models through different providers with
 ```
