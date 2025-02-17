@@ -23,7 +23,6 @@ async def main():
     os.environ["DEEPSEEK_API_KEY"] = "sk-997610731f454ff7a6837fd67998b17e"
     os.environ["XAI_API_KEY"] = "xai-PjaCbaSlEpu53VxlmKHPXki5iCSrLKQoYEGn9ijURo0O96Q7YJrHvIv2abDUfWbnLJ8yqvb17EP9zcYt"
     os.environ["GEMINI_API_KEY"] = "AIzaSyBJwBl-HFFh4nfGgQBPNchM2r3tzayGO2M"
-
     # Configure service agent
     service_config = LLMConfig(
         params={
@@ -53,15 +52,11 @@ IMPORTANT: Use the tool end_call() only when you are satisfied with your order a
         end_call_enabled=True
     )
     
-    # Create providers with custom configs
-    service_provider = OpenAIProvider(config=service_config)
-    customer_provider = AnthropicProvider(config=customer_config)
-    
     # Create list of conversations to test
     conversations = [
         LLMConversation(
-            service_provider=service_provider,
-            customer_provider=customer_provider,
+            service_provider=OpenAIProvider(config=service_config),
+            customer_provider=AnthropicProvider(config=customer_config),
             type="inbound",
             first_message="Hi, what's on the menu today?",
             evaluations=[
@@ -70,8 +65,8 @@ IMPORTANT: Use the tool end_call() only when you are satisfied with your order a
             ]
         ),
         LLMConversation(
-            service_provider=service_provider,
-            customer_provider=customer_provider,
+            service_provider=OpenAIProvider(config=service_config),
+            customer_provider=AnthropicProvider(config=customer_config),
             type="outbound",
             first_message="Hi, what would you like to order?",
             evaluations=[
@@ -80,8 +75,8 @@ IMPORTANT: Use the tool end_call() only when you are satisfied with your order a
             ]
         ),
         LLMConversation(
-            service_provider=service_provider,
-            customer_provider=customer_provider,
+            service_provider=OpenAIProvider(config=service_config),
+            customer_provider=AnthropicProvider(config=customer_config),
             type="inbound",
             first_message="Hi, I'm so hungry",
             evaluations=[

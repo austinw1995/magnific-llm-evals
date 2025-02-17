@@ -12,16 +12,16 @@ This will automatically install all required dependencies.
 
 Alternatively, if installing from source:
 ```bash
-git clone https://github.com/yourusername/magnific-llm-evals.git
+git clone https://github.com/austinw1995/magnific-llm-evals
 cd magnific-llm-evals
 pip install -r requirements.txt
 ```
 
 ## Features
 
-- Evaluate multiple LLMs against various customer conversation scenarios in parallel
-- Define custom evaluation criteria
-- Record conversation transcripts
+- Evaluate multiple LLMs against various customer conversation scenarios by customizing the service and customer agents
+- Define custom evaluation criteria for a successful conversation
+- Run multiple tests in parallel and record conversation transcripts
 - Generate detailed evaluation reports
 
 ## Usage
@@ -37,10 +37,36 @@ os.environ["XAI_API_KEY"] = "..."
 os.environ["GEMINI_API_KEY"] = "..."
 ```
 
+We support a variety of LLMs through 7 providers, which are OpenAI, Anthropic, TogetherAI, Groq, DeepSeek, Cerebrad, XAI, and Google Gemini:
+You can access different models through different providers with
+```
+from magnific import (
+    OpenAIProvider,
+    AnthropicProvider,
+    TogetherAIProvider,
+    GroqProvider,
+    DeepSeekProvider,
+    CerebrasProvider,
+    XAIProvider,
+    GeminiProvider,
+)
+```
+For each provider, the following models are supported:
+| Provider              | Models |
+|-----------------------|--------|
+| **OpenAIProvider**    | gpt-4o<br>gpt-4o-mini<br>gpt-3.5-turbo-0125<br>o1<br>o1-mini<br>o3-mini |
+| **AnthropicProvider** | claude-3-5-sonnet-20241022<br>claude-3-5-haiku-20241022<br>claude-3-opus-20240229<br>claude-3-sonnet-20240229<br>claude-3-haiku-20240307 |
+| **TogetherAIProvider**| meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo<br>meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo<br>meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo<br>meta-llama/Llama-3.3-70B-Instruct-Turbo<br>mistralai/Mixtral-8x7B-Instruct-v0.1<br>mistralai/Mistral-7B-Instruct-v0.1<br>Qwen/Qwen2.5-7B-Instruct-Turbo<br>Qwen/Qwen2.5-72B-Instruct-Turbo |
+| **GroqProvider**      | qwen-2.5-32b<br>deepseek-r1-distill-qwen-32b<br>deepseek-r1-distill-llama-70b<br>llama-3.3-70b-versatile<br>llama-3.1-8b-instant<br>mixtral-8x7b-32768<br>gemma2-9b-it |
+| **DeepSeekProvider**  | deepseek-chat<br>deepseek-reasoner |
+| **CerebrasProvider**  | llama3.1-8b<br>llama-3.3-70b<br>DeepSeek-R1-Distill-Llama-70B |
+| **XAIProvider**       | xgrok-2-latest |
+| **GeminiProvider**    | gemini-2.0-flash<br>gemini-2.0-flash-lite-preview-02-05<br>gemini-1.5-flash<br>gemini-1.5-flash-8b<br>gemini-1.5-pro |
+
 To set the configuration for a service or customer agent, create a LLMConfig object with the desired parameters.
-1. params is a dictionary of parameters for the LLM, which can be any parameter supported by the LLM provider.
-2. system_prompt is a string of instructions for the LLM to follow.
-3. end_call_enabled is a boolean that determines if the LLM should be able to end the call with the tool use/function call end_call().
+1. params is a dictionary of any parameter supported by the LLM model provider.
+2. system_prompt is the instruction task for the LLM agent to follow.
+3. end_call_enabled is a boolean that determines if the LLM should be able to end the call with the function call end_call().
 
 ```
 service_config_1 = LLMConfig(
@@ -49,10 +75,7 @@ service_config_1 = LLMConfig(
             "temperature": 0.7,
             "max_tokens": 150,
         },
-        system_prompt="""You are a voice assistant for Vappy's Pizzeria, a pizza shop located on the Internet.
-Your job is to take the order of customers calling in. The menu has only 3 types of items: pizza, sides, and drinks.
-Keep responses short and simple. Do not end the call until the customer says bye.
-IMPORTANT: Do not use tool end_call() until all of the customer's questions are answered and they say something like "bye" or "see you.'
+        system_prompt="""You are a voice assistant for Vappy's Pizzeria, a pizza shop located on the Internet...IMPORTANT: Do not use tool end_call() until all of the customer's questions are answered and they say something like "bye" or "see you.''
 """,
         end_call_enabled=True
     )
@@ -63,10 +86,7 @@ service_config_2 = LLMConfig(
             "temperature": 0.2,
             "max_tokens": 90,
         },
-        system_prompt="""You are a voice assistant for Vappy's Burgers, a burger shop located on the Internet.
-Your job is to take the order of customers calling in. The menu has only 3 types of items: burgers, sides, and milkshakes.
-Keep responses short and simple. Do not end the call until the customer says bye.
-IMPORTANT: Do not use tool end_call() until all of the customer's questions are answered and they say something like "bye" or "see you.'
+        system_prompt="""You are a voice assistant for Vappy's Burgers, a burger shop located on the Internet...IMPORTANT: Do not use tool end_call() until all of the customer's questions are answered and they say something like "bye" or "see you.'
 """,
         end_call_enabled=True
     )
@@ -75,9 +95,7 @@ customer_config_1 = LLMConfig(
         params={
             "model": "gemini-2.0-flash"
         },
-        system_prompt="""You are a hungry customer who wants to order food.
-Your tone is casual and excited.
-IMPORTANT: Use the tool end_call() only when you are satisfied with your order and all your questions are answered.
+        system_prompt="""You are a hungry customer who wants to order food...IMPORTANT: Use the tool end_call() only when you are satisfied with your order and all your questions are answered.
 """,
         end_call_enabled=True
     )
@@ -88,16 +106,13 @@ customer_config_2 = LLMConfig(
             "temperature": 0.9,
             "max_tokens": 50,
         },
-        system_prompt="""You are a cheerful customer who wants to order food.
-Your tone is cheerful and excited.
-IMPORTANT: Use the tool end_call() only when you are satisfied with your order and all your questions are answered.
+        system_prompt="""You are a cheerful customer who wants to order food...IMPORTANT: Use the tool end_call() only when you are satisfied with your order and all your questions are answered.
 """,
         end_call_enabled=True
     )
 ```
 
-To initialize the providers, use the LLMProvider class.
-
+To initialize the providers, use the LLM Provider classes.
 ```
 service_provider_1 = OpenAIProvider(config=service_config_1)
 service_provider_2 = AnthropicProvider(config=service_config_2)
@@ -105,29 +120,16 @@ customer_provider_1 = GeminiProvider(config=customer_config_1)
 customer_provider_2 = GroqProvider(config=customer_config_2)
 ```
 
-For each provider, the following models are supported:
-
-- OpenAIProvider: gpt-4o, gpt-4o-mini, gpt-3.5-turbo-0125, o1, o1-mini, o3-mini
-- AnthropicProvider: claude-3-5-sonnet-20241022, claude-3-5-haiku-20241022, claude-3-opus-20240229, claude-3-sonnet-20240229, claude-3-haiku-20240307
-- TogetherAIProvider: meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo, meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo, meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo, meta-llama/Llama-3.3-70B-Instruct-Turbo, mistralai/Mixtral-8x7B-Instruct-v0.1, mistralai/Mistral-7B-Instruct-v0.1, Qwen/Qwen2.5-7B-Instruct-Turbo, Qwen/Qwen2.5-72B-Instruct-Turbo
-- GroqProvider: qwen-2.5-32b, deepseek-r1-distill-qwen-32b, deepseek-r1-distill-llama-70b, llama-3.3-70b-versatile, llama-3.1-8b-instant, mixtral-8x7b-32768, gemma2-9b-it
-- DeepSeekProvider: deepseek-chat, deepseek-reasoner
-- CerebrasProvider: llama3.1-8b, llama-3.3-70b, DeepSeek-R1-Distill-Llama-70B
-- XAIProvider: xgrok-2-latest
-- GeminiProvider: gemini-2.0-flash, gemini-2.0-flash-lite-preview-02-05, gemini-1.5-flash, gemini-1.5-flash-8b, gemini-1.5-pro
-
 To instantiate a list of conversations, use the LLMConversation class.
-1. service_provider is the provider for the service agent.
-2. customer_provider is the provider for the customer agent.
-3. type is the type of conversation, either "inbound" or "outbound", where inbound is the customer calling in and outbound is the service agent calling out.
-4. first_message is the first message in the conversation by the caller.
-5. evaluations is a list of custom evaluations to be performed on the conversation, where name is the name of the evaluation and prompt is the prompt/criteria for the evaluation.
+1. type is the type of conversation, either "inbound" or "outbound", inbound is the customer calling in and outbound is the service agent calling out.
+2. first_message is the first message in the conversation by the caller.
+3. evaluations is a list of user defined evaluations to be performed on the conversation, customize the name of the evaluation and prompt, which specifies the evaluation criteria.
 
 ```
 conversations = [
         LLMConversation(
-            service_provider=service_provider_1,
-            customer_provider=customer_provider_1,
+            service_provider=OpenAIProvider(config=service_config_1),
+            customer_provider=GeminiProvider(config=customer_config_1),
             type="inbound",
             first_message="Hi, what's on the menu today?",
             evaluations=[
@@ -136,8 +138,8 @@ conversations = [
             ]
         ),
         LLMConversation(
-            service_provider=service_provider_2,
-            customer_provider=customer_provider_2,
+            service_provider=AnthropicProvider(config=service_config_2),
+            customer_provider=GroqProvider(config=customer_config_2),
             type="outbound",
             first_message="Hi, what would you like to order?",
             evaluations=[
@@ -146,8 +148,8 @@ conversations = [
             ]
         ),
         LLMConversation(
-            service_provider=service_provider_1,
-            customer_provider=customer_provider_1,
+            service_provider=OpenAIProvider(config=service_config_1),
+            customer_provider=GeminiProvider(config=customer_config_1),
             type="inbound",
             first_message="Hi, I'm so hungry",
             evaluations=[
@@ -158,7 +160,7 @@ conversations = [
     ]
 ```
 
-To run the tests in parallel, with a specific llm-as-a-judge evaluation model (we only support openai models for now), use the TestRunner class.
+Finally, to run the tests in parallel, with the evaluation criterias (for eval models we only support openai for now), use the TestRunner class.
 
 ```
 runner = TestRunner(eval_model="gpt-4o-mini")
@@ -166,7 +168,7 @@ results = await runner.run_tests(conversations)
 ```
 
 The results will be a dictionary with the test_id as the key and the result as the value.
-An example result based on the conversations above is:
+An example result based on the conversations above is shown below, where the evaluations output scores and reasons for passing or failing. The LLM configurations of service and customer agents are also included in the result for prompt management purposes.
 
 ```
 {
@@ -194,7 +196,7 @@ An example result based on the conversations above is:
         "temperature": 0.7,
         "max_tokens": 150
       },
-      "system_prompt": "You are a voice assistant for Vappy's Pizzeria, a pizza shop located on the Internet.\nYour job is to take the order of customers calling in. The menu has only 3 types of items: pizza, sides, and drinks.\nKeep responses short and simple. Do not end the call until the customer says bye.\nIMPORTANT: Do not use tool end_call() until all of the customer's questions are answered and they say something like \"bye\" or \"see you.\"",
+      "system_prompt": "You are a voice assistant for Vappy's Pizzeria...",
       "end_call_enabled": true
     },
     "customer_config": {
@@ -203,7 +205,7 @@ An example result based on the conversations above is:
         "temperature": 0.9,
         "max_tokens": 100
       },
-      "system_prompt": "You are a hungry customer who wants to order food.\nYour tone is casual and excited.\nIMPORTANT: Use the tool end_call() only when you are satisfied with your order and all your questions are answered.",
+      "system_prompt": "You are a hungry customer who wants to order food...",
       "end_call_enabled": true
     }
   },
@@ -231,7 +233,7 @@ An example result based on the conversations above is:
         "temperature": 0.7,
         "max_tokens": 150
       },
-      "system_prompt": "You are a voice assistant for Vappy's Pizzeria, a pizza shop located on the Internet.\nYour job is to take the order of customers calling in. The menu has only 3 types of items: pizza, sides, and drinks.\nKeep responses short and simple. Do not end the call until the customer says bye.\nIMPORTANT: Do not use tool end_call() until all of the customer's questions are answered and they say something like \"bye\" or \"see you.\"",
+      "system_prompt": "You are a voice assistant for Vappy's Pizzeri...",
       "end_call_enabled": true
     },
     "customer_config": {
@@ -240,7 +242,7 @@ An example result based on the conversations above is:
         "temperature": 0.9,
         "max_tokens": 100
       },
-      "system_prompt": "You are a hungry customer who wants to order food.\nYour tone is casual and excited.\nIMPORTANT: Use the tool end_call() only when you are satisfied with your order and all your questions are answered.",
+      "system_prompt": "You are a hungry customer who wants to order food...",
       "end_call_enabled": true
     }
   },
@@ -268,7 +270,7 @@ An example result based on the conversations above is:
         "temperature": 0.7,
         "max_tokens": 150
       },
-      "system_prompt": "You are a voice assistant for Vappy's Pizzeria, a pizza shop located on the Internet.\nYour job is to take the order of customers calling in. The menu has only 3 types of items: pizza, sides, and drinks.\nKeep responses short and simple. Do not end the call until the customer says bye.\nIMPORTANT: Do not use tool end_call() until all of the customer's questions are answered and they say something like \"bye\" or \"see you.\"",
+      "system_prompt": "You are a voice assistant for Vappy's Pizzeria...",
       "end_call_enabled": true
     },
     "customer_config": {
@@ -277,7 +279,7 @@ An example result based on the conversations above is:
         "temperature": 0.9,
         "max_tokens": 100
       },
-      "system_prompt": "You are a hungry customer who wants to order food.\nYour tone is casual and excited.\nIMPORTANT: Use the tool end_call() only when you are satisfied with your order and all your questions are answered.",
+      "system_prompt": "You are a hungry customer who wants to order food...",
       "end_call_enabled": true
     }
   }

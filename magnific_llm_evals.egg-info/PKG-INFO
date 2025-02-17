@@ -1,6 +1,6 @@
 Metadata-Version: 2.2
 Name: magnific-llm-evals
-Version: 0.0.1
+Version: 0.0.2
 Summary: A package for evaluating LLMs in customer service scenarios
 Home-page: https://github.com/austinw1995/magnific-llm-evals
 Author: Austin Wang, Prithvi Balehannina
@@ -45,7 +45,7 @@ This will automatically install all required dependencies.
 
 Alternatively, if installing from source:
 ```bash
-git clone https://github.com/yourusername/magnific-llm-evals.git
+git clone https://github.com/austinw1995/magnific-llm-evals
 cd magnific-llm-evals
 pip install -r requirements.txt
 ```
