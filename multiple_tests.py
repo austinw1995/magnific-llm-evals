@@ -24,7 +24,7 @@ async def main():
     os.environ["XAI_API_KEY"] = "xai-PjaCbaSlEpu53VxlmKHPXki5iCSrLKQoYEGn9ijURo0O96Q7YJrHvIv2abDUfWbnLJ8yqvb17EP9zcYt"
     os.environ["GEMINI_API_KEY"] = "AIzaSyBJwBl-HFFh4nfGgQBPNchM2r3tzayGO2M"
     # Configure service agent
-    service_config = LLMConfig(
+    service_config_1 = LLMConfig(
         params={
             "model": "gpt-4o-mini",
             "temperature": 0.7,
@@ -37,16 +37,41 @@ IMPORTANT: Do not use tool end_call() until all of the customer's questions are 
 """,
         end_call_enabled=True
     )
-    
-    # Configure customer agent with different parameters
-    customer_config = LLMConfig(
+
+    service_config_2 = LLMConfig(
         params={
             "model": "claude-3-5-sonnet-20241022",
-            "temperature": 0.9,
-            "max_tokens": 100,
+            "temperature": 0.2,
+            "max_tokens": 90,
+        },
+        system_prompt="""You are a voice assistant for Vappy's Burgers, a burger shop located on the Internet.
+Your job is to take the order of customers calling in. The menu has only 3 types of items: burgers, sides, and milkshakes.
+Keep responses short and simple. Do not end the call until the customer says bye.
+IMPORTANT: Do not use tool end_call() until all of the customer's questions are answered and they say something like "bye" or "see you.'
+""",
+        end_call_enabled=True
+    )
+    
+    # Configure customer agent with different parameters
+    customer_config_1 = LLMConfig(
+        params={
+            "model": "gemini-2.0-flash"
         },
         system_prompt="""You are a hungry customer who wants to order food.
 Your tone is casual and excited.
+IMPORTANT: Use the tool end_call() only when you are satisfied with your order and all your questions are answered.
+""",
+        end_call_enabled=True
+    )
+
+    customer_config_2 = LLMConfig(
+        params={
+            "model": "llama-3.3-70b-versatile",
+            "temperature": 0.9,
+            "max_tokens": 50,
+        },
+        system_prompt="""You are a cheerful customer who wants to order food.
+Your tone is cheerful and excited.
 IMPORTANT: Use the tool end_call() only when you are satisfied with your order and all your questions are answered.
 """,
         end_call_enabled=True
@@ -55,8 +80,8 @@ IMPORTANT: Use the tool end_call() only when you are satisfied with your order a
     # Create list of conversations to test
     conversations = [
         LLMConversation(
-            service_provider=OpenAIProvider(config=service_config),
-            customer_provider=AnthropicProvider(config=customer_config),
+            service_provider=OpenAIProvider(config=service_config_1),
+            customer_provider=GeminiProvider(config=customer_config_1),
             type="inbound",
             first_message="Hi, what's on the menu today?",
             evaluations=[
@@ -65,8 +90,8 @@ IMPORTANT: Use the tool end_call() only when you are satisfied with your order a
             ]
         ),
         LLMConversation(
-            service_provider=OpenAIProvider(config=service_config),
-            customer_provider=AnthropicProvider(config=customer_config),
+            service_provider=AnthropicProvider(config=service_config_2),
+            customer_provider=GroqProvider(config=customer_config_2),
             type="outbound",
             first_message="Hi, what would you like to order?",
             evaluations=[
@@ -75,8 +100,8 @@ IMPORTANT: Use the tool end_call() only when you are satisfied with your order a
             ]
         ),
         LLMConversation(
-            service_provider=OpenAIProvider(config=service_config),
-            customer_provider=AnthropicProvider(config=customer_config),
+            service_provider=OpenAIProvider(config=service_config_1),
+            customer_provider=GeminiProvider(config=customer_config_1),
             type="inbound",
             first_message="Hi, I'm so hungry",
             evaluations=[

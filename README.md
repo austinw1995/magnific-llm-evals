@@ -171,15 +171,15 @@ An example result based on the conversations above is shown below, where the eva
     "evaluation_results": [
       {
         "name": "Menu",
-        "passed": false,
-        "score": 0.2,
-        "reason": "The menu items are mentioned in a conversational format rather than a structured format with each item on a new line. The response does not meet the requirement for clear presentation."
+        "passed": true,
+        "score": 1.0,
+        "reason": "The menu items are displayed in a structured format, with each item listed on a new line, making it easy to read and understand."
       },
       {
         "name": "helpfulness",
         "passed": true,
         "score": 1.0,
-        "reason": "The service agent provided detailed information about the menu items, answered all questions asked by the customer, and offered additional options, demonstrating a high level of helpfulness."
+        "reason": "The service agent provided detailed information about the menu, answered all questions regarding the pizzas, sizes, prices, and specials, and offered additional options for sides and drinks, demonstrating a high level of helpfulness."
       }
     ],
     "service_config": {
@@ -188,16 +188,14 @@ An example result based on the conversations above is shown below, where the eva
         "temperature": 0.7,
         "max_tokens": 150
       },
-      "system_prompt": "You are a voice assistant for Vappy's Pizzeria...",
+      "system_prompt": "You are a voice assistant for Vappy's Pizzeria, a pizza shop located on the Internet. ... IMPORTANT: Do not use tool end_call() until all of the customer's questions are answered and they say something like \"bye\" or \"see you.\"",
       "end_call_enabled": true
     },
     "customer_config": {
       "params": {
-        "model": "claude-3-5-sonnet-20241022",
-        "temperature": 0.9,
-        "max_tokens": 100
+        "model": "gemini-2.0-flash"
       },
-      "system_prompt": "You are a hungry customer who wants to order food...",
+      "system_prompt": "You are a hungry customer who wants to order food. ... IMPORTANT: Use the tool end_call() only when you are satisfied with your order and all your questions are answered.",
       "end_call_enabled": true
     }
   },
@@ -210,31 +208,31 @@ An example result based on the conversations above is shown below, where the eva
         "name": "Menu",
         "passed": true,
         "score": 1.0,
-        "reason": "The menu items were clearly listed in a structured format, with each item on a new line, making it easy to read and understand."
+        "reason": "The menu is displayed in a structured format with each item on a new line, making it easy to read and understand."
       },
       {
         "name": "conciseness",
         "passed": true,
         "score": 0.8,
-        "reason": "The service agent provided clear and relevant information without unnecessary elaboration. However, there were moments where the responses could have been slightly more succinct, particularly in confirming the order."
+        "reason": "The service agent provided necessary information and confirmed the order without excessive detail. However, there were moments where the responses could have been slightly more concise, particularly in the explanation of the menu and specials."
       }
     ],
     "service_config": {
       "params": {
-        "model": "gpt-4o-mini",
-        "temperature": 0.7,
-        "max_tokens": 150
+        "model": "claude-3-5-sonnet-20241022",
+        "temperature": 0.2,
+        "max_tokens": 90
       },
-      "system_prompt": "You are a voice assistant for Vappy's Pizzeri...",
+      "system_prompt": "You are a voice assistant for Vappy's Burgers, a burger shop located on the Internet. ... IMPORTANT: Do not use tool end_call() until all of the customer's questions are answered and they say something like \"bye\" or \"see you.\"",
       "end_call_enabled": true
     },
     "customer_config": {
       "params": {
-        "model": "claude-3-5-sonnet-20241022",
+        "model": "llama-3.3-70b-versatile",
         "temperature": 0.9,
-        "max_tokens": 100
+        "max_tokens": 50
       },
-      "system_prompt": "You are a hungry customer who wants to order food...",
+      "system_prompt": "You are a cheerful customer who wants to order food. ... IMPORTANT: Use the tool end_call() only when you are satisfied with your order and all your questions are answered.",
       "end_call_enabled": true
     }
   },
@@ -247,13 +245,13 @@ An example result based on the conversations above is shown below, where the eva
         "name": "empathy",
         "passed": true,
         "score": 0.9,
-        "reason": "The service agent demonstrated a good level of empathy by responding positively to the customer's excitement about food and acknowledging their hunger. However, there could have been more explicit expressions of understanding or concern for the customer's situation."
+        "reason": "The service agent demonstrated empathy by being patient and understanding throughout the conversation, acknowledging the customer's excitement and indecisiveness. However, there could have been more explicit expressions of understanding regarding the customer's hunger or excitement."
       },
       {
         "name": "frustration",
         "passed": true,
         "score": 1.0,
-        "reason": "The customer expressed excitement and eagerness throughout the conversation, showing no signs of frustration or annoyance."
+        "reason": "The customer expressed excitement and satisfaction throughout the conversation, showing no signs of frustration or annoyance."
       }
     ],
     "service_config": {
@@ -262,16 +260,14 @@ An example result based on the conversations above is shown below, where the eva
         "temperature": 0.7,
         "max_tokens": 150
       },
-      "system_prompt": "You are a voice assistant for Vappy's Pizzeria...",
+      "system_prompt": "You are a voice assistant for Vappy's Pizzeria, a pizza shop located on the Internet. ... IMPORTANT: Do not use tool end_call() until all of the customer's questions are answered and they say something like \"bye\" or \"see you.\"",
       "end_call_enabled": true
     },
     "customer_config": {
       "params": {
-        "model": "claude-3-5-sonnet-20241022",
-        "temperature": 0.9,
-        "max_tokens": 100
+        "model": "gemini-2.0-flash"
       },
-      "system_prompt": "You are a hungry customer who wants to order food...",
+      "system_prompt": "You are a hungry customer who wants to order food. ... IMPORTANT: Use the tool end_call() only when you are satisfied with your order and all your questions are answered.",
       "end_call_enabled": true
     }
   }
