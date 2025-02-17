@@ -1,3 +1,36 @@
+Metadata-Version: 2.2
+Name: magnific-llm-evals
+Version: 0.0.1
+Summary: A package for evaluating LLMs in customer service scenarios
+Home-page: https://github.com/austinw1995/magnific-llm-evals
+Author: Austin Wang, Prithvi Balehannina
+Author-email: austinwa@seas.upenn.edu, bprithvi@wharton.upenn.edu
+Classifier: Programming Language :: Python :: 3
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Software Development :: Testing
+Classifier: Topic :: Software Development :: Testing :: Unit
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: openai
+Requires-Dist: anthropic
+Requires-Dist: groq
+Requires-Dist: cerebras_cloud_sdk
+Requires-Dist: google-genai
+Requires-Dist: pydantic
+Requires-Dist: asyncio
+Requires-Dist: typing
+Requires-Dist: dataclasses
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
 # Magnific-Evals
 
 A python package for testing LLMs specifically for voice agents under customer service scenarios.
