@@ -37,7 +37,7 @@ os.environ["XAI_API_KEY"] = "..."
 os.environ["GEMINI_API_KEY"] = "..."
 ```
 
-We support a variety of LLMs through 7 providers, which are OpenAI, Anthropic, TogetherAI, Groq, DeepSeek, Cerebrad, XAI, and Google Gemini:
+We support a variety of LLMs through 7 providers, which are OpenAI, Anthropic, TogetherAI, Groq, DeepSeek, Cerebras, XAI, and Google Gemini:
 You can access different models through different providers with
 ```
 from magnific import (
