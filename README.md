@@ -1,6 +1,6 @@
 # Magnific-Evals
 
-A python package for testing LLMs with custom evaluation criterias specifically for voice agents under customer service scenarios.
+A python package for testing LLMs with custom evaluation criterias, specifically for multi-turn conversations under customer service scenarios.
 
 ## Installation
 
