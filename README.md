@@ -66,7 +66,7 @@ For each provider, the following models are supported:
 To set the configuration for a service or customer agent, create a LLMConfig object with the desired parameters.
 1. params is a dictionary of any parameter supported by the LLM model provider.
 2. system_prompt is the instruction task for the LLM agent to follow.
-3. end_call_enabled is a boolean that determines if the LLM should be able to end the call with the function call end_call().
+3. end_call_enabled is a boolean that determines if the LLM should be able to end the call with the function call end_call(). (Note: IMPORTANT texts are highlighted in the system prompt to ensure function call reliability).
 
 ```
 service_config_1 = LLMConfig(
@@ -112,15 +112,7 @@ customer_config_2 = LLMConfig(
     )
 ```
 
-To initialize the providers, use the LLM Provider classes.
-```
-service_provider_1 = OpenAIProvider(config=service_config_1)
-service_provider_2 = AnthropicProvider(config=service_config_2)
-customer_provider_1 = GeminiProvider(config=customer_config_1)
-customer_provider_2 = GroqProvider(config=customer_config_2)
-```
-
-To instantiate a list of conversations, use the LLMConversation class.
+To instantiate a list of conversations for testing, use the LLMConversation class.
 1. type is the type of conversation, either "inbound" or "outbound", inbound is the customer calling in and outbound is the service agent calling out.
 2. first_message is the first message in the conversation by the caller.
 3. evaluations is a list of user defined evaluations to be performed on the conversation, customize the name of the evaluation and prompt, which specifies the evaluation criteria.
