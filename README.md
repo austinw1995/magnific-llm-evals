@@ -124,9 +124,10 @@ customer_config_2 = LLMConfig(
 ```
 
 To instantiate a list of conversations for testing, use the LLMConversation class.
-1. type is the type of conversation, either "inbound" (customer calling in) or "outbound" (service agent calling out).
-2. first_message is the first utterance of the caller.
-3. evaluations is a list of user defined evaluations to be performed on the conversation, customize the name of the evaluation and prompt, which specifies the evaluation criteria.
+1. service_provider takes in the service agent's LLMConfig object wrapped in a provider that suppports its LLM model. customer_provider takes in the customer agent's LLMConfig object wrapped in a provider that suppports its LLM model.
+2. type is the type of conversation, either "inbound" (customer calling in) or "outbound" (service agent calling out).
+3. first_message is the first utterance of the caller.
+4. evaluations is a list of user defined evaluations to be performed on the conversation, customize the name of the evaluation and prompt, which specifies the evaluation criteria.
 
 ```
 conversations = [
