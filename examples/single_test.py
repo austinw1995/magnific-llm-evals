@@ -14,6 +14,7 @@ from magnific import (
 from magnific import LLMConversation
 from magnific import Evaluation
 from magnific import TestRunner
+from magnific.evaluators.evaluator import get_default_logs_dir
 
 async def main():
     # os.environ["OPENAI_API_KEY"] = "..."
@@ -63,6 +64,9 @@ IMPORTANT: Use the tool end_call() only when you are satisfied with your order a
     runner = TestRunner(eval_model="gpt-4o")
     print("\nStarting conversation tests...")
     results = await runner.run_tests(conversations, max_turns=20)
+    
+    # Print log location
+    print(f"\nLogs are saved at: {get_default_logs_dir()}")
 
     # Print results
     for test_id, result in results.items():

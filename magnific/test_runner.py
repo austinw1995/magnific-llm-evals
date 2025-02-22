@@ -1,7 +1,9 @@
 import asyncio
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 from magnific.conversation import LLMConversation
 from magnific.evaluators.evalrunner import LlmEvaluator
+from magnific.evaluators.evaluator import save_results_to_csv, EvaluationResult
+from pathlib import Path
 
 class TestResult:
     def __init__(self, test_id: int, call_type: str, transcript: str, evaluation_results: List[Dict], 
@@ -36,7 +38,13 @@ class TestRunner:
         self.eval_model = eval_model
         self.test_counter = 0  # Initialize counter for test IDs
 
-    async def run_tests(self, conversations: List[LLMConversation], max_turns: int = 20) -> Dict[str, Dict]:
+    async def run_tests(
+        self, 
+        conversations: List[LLMConversation], 
+        max_turns: int = 20,
+        save_logs: bool = True,
+        logs_dir: Optional[Path] = None
+    ) -> Dict[str, Dict]:
         # Create tasks for all conversations sequentially
         async with asyncio.TaskGroup() as tg:
             tasks = []
@@ -51,6 +59,24 @@ class TestRunner:
             task.result().test_id: task.result().to_dict()
             for task in tasks
         }
+        
+        # Save results to CSV if requested
+        if save_logs:
+            for test_id, result in results.items():
+                # Convert the evaluation results back to EvaluationResult objects
+                eval_results = [
+                    EvaluationResult(**eval_dict)
+                    for eval_dict in result["evaluation_results"]
+                ]
+                
+                # Save to CSV
+                save_results_to_csv(
+                    model_type="LLM",
+                    model_name=result["service_config"]["params"].get("model", "unknown"),
+                    transcript=result["transcript"],
+                    evaluation_results=eval_results,
+                    logs_dir=logs_dir
+                )
         
         return results
 
