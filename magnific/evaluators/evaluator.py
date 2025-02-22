@@ -7,6 +7,7 @@ import os
 from pathlib import Path
 from datetime import datetime
 import csv
+import json
 
 class EvaluationResult(BaseModel):
     name: str
@@ -85,5 +86,65 @@ def save_results_to_csv(
             writer.writeheader()
             
         writer.writerow(row_data)
+    
+    return output_file
+
+def save_test_details_to_json(
+    test_id: str,
+    model_type: str,
+    model_name: str,
+    transcript: str,
+    evaluation_results: List[EvaluationResult],
+    service_config: Dict,
+    customer_config: Dict,
+    logs_dir: Optional[Union[str, Path]] = None,
+) -> Path:
+    """
+    Save complete test details including configs to a JSON file.
+    """
+    logs_path = Path(logs_dir) if logs_dir else get_default_logs_dir()
+    logs_path.mkdir(parents=True, exist_ok=True)
+    
+    timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    json_filename = f"test_details_{test_id}_{timestamp}.json"
+    output_file = logs_path / json_filename
+    
+    test_data = {
+        'test_id': test_id,
+        'model_type': model_type,
+        'model_name': model_name,
+        'timestamp': timestamp,
+        'transcript': transcript,
+        'evaluation_results': [result.dict() for result in evaluation_results],
+        'service_config': service_config,
+        'customer_config': customer_config
+    }
+    
+    with output_file.open('w', encoding='utf-8') as f:
+        json.dump(test_data, f, indent=2)
+    
+    return output_file
+
+def save_run_details_to_json(
+    test_results: Dict[str, Dict],
+    logs_dir: Optional[Union[str, Path]] = None,
+) -> Path:
+    """
+    Save all test results from a single run to one JSON file.
+    """
+    logs_path = Path(logs_dir) if logs_dir else get_default_logs_dir()
+    logs_path.mkdir(parents=True, exist_ok=True)
+    
+    timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    json_filename = f"run_details_{timestamp}.json"
+    output_file = logs_path / json_filename
+    
+    run_data = {
+        'timestamp': timestamp,
+        'tests': test_results
+    }
+    
+    with output_file.open('w', encoding='utf-8') as f:
+        json.dump(run_data, f, indent=2)
     
     return output_file

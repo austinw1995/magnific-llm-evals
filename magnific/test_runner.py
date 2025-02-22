@@ -2,7 +2,11 @@ import asyncio
 from typing import List, Dict, Any, Optional
 from magnific.conversation import LLMConversation
 from magnific.evaluators.evalrunner import LlmEvaluator
-from magnific.evaluators.evaluator import save_results_to_csv, EvaluationResult
+from magnific.evaluators.evaluator import (
+    save_results_to_csv, 
+    save_run_details_to_json,
+    EvaluationResult
+)
 from pathlib import Path
 
 class TestResult:
@@ -49,7 +53,7 @@ class TestRunner:
         async with asyncio.TaskGroup() as tg:
             tasks = []
             for conv in conversations:
-                self.test_counter += 1  # Increment counter before creating each task
+                self.test_counter += 1
                 tasks.append(
                     tg.create_task(self.run_single_test(conv, self.test_counter, max_turns))
                 )
@@ -60,16 +64,21 @@ class TestRunner:
             for task in tasks
         }
         
-        # Save results to CSV if requested
+        # Save results if requested
         if save_logs:
+            # Save all tests to a single JSON file
+            json_path = save_run_details_to_json(
+                test_results=results,
+                logs_dir=logs_dir
+            )
+            
+            # Also save individual results to CSV for backward compatibility
             for test_id, result in results.items():
-                # Convert the evaluation results back to EvaluationResult objects
                 eval_results = [
                     EvaluationResult(**eval_dict)
                     for eval_dict in result["evaluation_results"]
                 ]
                 
-                # Save to CSV
                 save_results_to_csv(
                     model_type="LLM",
                     model_name=result["service_config"]["params"].get("model", "unknown"),

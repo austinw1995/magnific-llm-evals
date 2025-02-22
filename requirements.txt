@@ -8,3 +8,5 @@ asyncio
 typing
 dataclasses
 dotenv
+fastapi
+uvicorn
