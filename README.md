@@ -15,6 +15,7 @@ Alternatively, if installing from source:
 git clone https://github.com/austinw1995/magnific-llm-evals
 cd magnific-llm-evals
 pip install -r requirements.txt
+pip install -e .
 ```
 
 ## Features
