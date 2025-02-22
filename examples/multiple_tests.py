@@ -16,10 +16,10 @@ from magnific import Evaluation
 from magnific import TestRunner
 
 async def main():
-    os.environ["OPENAI_API_KEY"] = "..."
-    os.environ["ANTHROPIC_API_KEY"] = "..."
-    os.environ["GROQ_API_KEY"] = "..."
-    os.environ["GEMINI_API_KEY"] = "..."
+    # os.environ["OPENAI_API_KEY"] = "..."
+    # os.environ["ANTHROPIC_API_KEY"] = "..."
+    # os.environ["GROQ_API_KEY"] = "..."
+    # os.environ["GEMINI_API_KEY"] = "..."
     # Configure service agent
     service_config_1 = LLMConfig(
         params={

@@ -16,7 +16,7 @@ from magnific import Evaluation
 from magnific import TestRunner
 
 async def main():
-    os.environ["OPENAI_API_KEY"] = "..."
+    # os.environ["OPENAI_API_KEY"] = "..."
 
     # Configure service agent
     service_config = LLMConfig(
@@ -61,6 +61,7 @@ IMPORTANT: Use the tool end_call() only when you are satisfied with your order a
 
     # Run all tests with a specific evaluation model
     runner = TestRunner(eval_model="gpt-4o")
+    print("\nStarting conversation tests...")
     results = await runner.run_tests(conversations, max_turns=20)
 
     # Print results
