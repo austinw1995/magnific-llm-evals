@@ -49,7 +49,7 @@ IMPORTANT: Do not use tool end_call() until all of the customer's questions are 
 
 async def run_tests():
     # Create test runner
-    runner = TestRunner(eval_model="gpt-4o-mini")
+    runner = TestRunner(eval_model="gpt-4o")
     
     # Initialize list to store all conversations
     all_conversations = []
@@ -62,7 +62,6 @@ async def run_tests():
                 params={
                     "model": model,
                     "temperature": 0.7,
-                    "max_tokens": 150,
                 },
                 system_prompt=conv_config["service_prompt"],
                 end_call_enabled=True
@@ -71,9 +70,8 @@ async def run_tests():
             # Configure customer (using a consistent model)
             customer_config = LLMConfig(
                 params={
-                    "model": "gpt-4o-mini",
+                    "model": "gpt-4o",
                     "temperature": 0.7,
-                    "max_tokens": 150,
                 },
                 system_prompt=conv_config["customer_prompt"],
                 end_call_enabled=True

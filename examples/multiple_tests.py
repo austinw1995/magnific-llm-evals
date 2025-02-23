@@ -23,9 +23,9 @@ async def main():
     # Configure service agent
     service_config_1 = LLMConfig(
         params={
-            "model": "gpt-4o-mini",
+            "model": "gpt-4o",
             "temperature": 0.7,
-            "max_tokens": 150,
+            "max_tokens": 10000,
         },
         system_prompt="""You are a voice assistant for Vappy's Pizzeria, a pizza shop located on the Internet.
 Your job is to take the order of customers calling in. The menu has only 3 types of items: pizza, sides, and drinks.
@@ -39,7 +39,7 @@ IMPORTANT: Do not use tool end_call() until all of the customer's questions are 
         params={
             "model": "claude-3-5-sonnet-20241022",
             "temperature": 0.2,
-            "max_tokens": 90,
+            "max_tokens": 10000,
         },
         system_prompt="""You are a voice assistant for Vappy's Burgers, a burger shop located on the Internet.
 Your job is to take the order of customers calling in. The menu has only 3 types of items: burgers, sides, and milkshakes.
@@ -65,7 +65,7 @@ IMPORTANT: Use the tool end_call() only when you are satisfied with your order a
         params={
             "model": "llama-3.3-70b-versatile",
             "temperature": 0.9,
-            "max_tokens": 50,
+            "max_tokens": 10000,
         },
         system_prompt="""You are a cheerful customer who wants to order food.
 Your tone is cheerful and excited.

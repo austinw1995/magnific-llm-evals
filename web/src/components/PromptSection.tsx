@@ -23,24 +23,36 @@ export function PromptSection({ config, onConfigChange, onSave, onRun, isLoading
             <Label>Model Name</Label>
             <Input
               value={config.params.model}
-              readOnly
-              className="bg-muted"
+              onChange={(e) => onConfigChange({
+                ...config,
+                params: { ...config.params, model: e.target.value }
+              })}
             />
           </div>
           <div className="space-y-2">
             <Label>Temperature</Label>
             <Input
+              type="number"
               value={config.params.temperature}
-              readOnly
-              className="bg-muted"
+              onChange={(e) => onConfigChange({
+                ...config,
+                params: { ...config.params, temperature: parseFloat(e.target.value) }
+              })}
+              min={0}
+              max={1}
+              step={0.1}
             />
           </div>
           <div className="space-y-2">
             <Label>Max Tokens</Label>
             <Input
+              type="number"
               value={config.params.max_tokens}
-              readOnly
-              className="bg-muted"
+              onChange={(e) => onConfigChange({
+                ...config,
+                params: { ...config.params, max_tokens: parseInt(e.target.value) }
+              })}
+              min={1}
             />
           </div>
         </div>
@@ -68,7 +80,7 @@ export function PromptSection({ config, onConfigChange, onSave, onRun, isLoading
             disabled={isLoading}
           >
             <Play className="w-4 h-4 mr-2" />
-            {isLoading ? 'Running...' : 'Run Evaluation'}
+            {isLoading ? 'Running...' : 'Re-Run Evaluation'}
           </Button>
         </div>
       </div>

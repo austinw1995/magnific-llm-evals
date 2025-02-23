@@ -19,6 +19,7 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+magnific_llm_evals.egg-info/
 
 # Virtual Environment
 venv/
@@ -49,25 +50,29 @@ lerna-debug.log*
 *.njsproj
 *.sln
 *.sw?
+Thumbs.db
 
-# Project specific
-evaluation_results_*.csv
+# Testing and Coverage
 .coverage
 htmlcov/
 .pytest_cache/
 .mypy_cache/
 
+# Project specific
+evaluation_results_*.csv
+
 # Node/Web
 node_modules/
+/web/node_modules
 dist/
 dist-ssr/
 build/
 .cache/
 .parcel-cache/
-*.local
 
 # Environment
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
+*.local

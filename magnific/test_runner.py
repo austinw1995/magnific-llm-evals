@@ -38,7 +38,7 @@ class TestResult:
         }
 
 class TestRunner:
-    def __init__(self, eval_model: str = "gpt-4o-mini"):
+    def __init__(self, eval_model: str = "gpt-4o"):
         self.eval_model = eval_model
         self.test_counter = 0  # Initialize counter for test IDs
 

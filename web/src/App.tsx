@@ -8,7 +8,7 @@ function App() {
     params: {
       model: '',
       temperature: 0.7,
-      max_tokens: 150,
+      max_tokens: 10000,
     },
     system_prompt: '',
     end_call_enabled: true
@@ -22,12 +22,37 @@ function App() {
     console.log('Saving configuration:', config);
   };
 
-  const handleRun = () => {
+  const handleRun = async () => {
     setIsLoading(true);
-    // TODO: Implement evaluation run
-    setTimeout(() => {
+    try {
+      const response = await fetch('http://localhost:8000/api/rerun', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          config,
+          test_results: testResults,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to re-run evaluations');
+      }
+
+      const data = await response.json();
+      
+      // Convert tests object to array for the table and cast to TestResult[]
+      const testsArray = Object.values(data.results) as TestResult[];
+      setTestResults(testsArray);
+
+      alert('Evaluations re-run successfully');
+    } catch (error) {
+      console.error('Error re-running evaluations:', error);
+      alert('Failed to re-run evaluations');
+    } finally {
       setIsLoading(false);
-    }, 2000);
+    }
   };
 
   const handleFileUpload = (file: File) => {

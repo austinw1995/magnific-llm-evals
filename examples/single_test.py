@@ -22,9 +22,9 @@ async def main():
     # Configure service agent
     service_config = LLMConfig(
         params={
-            "model": "gpt-4o-mini",
+            "model": "gpt-4o",
             "temperature": 0.7,
-            "max_tokens": 150,
+            "max_tokens": 10000,
         },
         system_prompt="""You are a voice assistant for Vappy's Pizzeria, a pizza shop located on the Internet.
 Your job is to take the order of customers calling in. The menu has only 3 types of items: pizza, sides, and drinks.
@@ -37,7 +37,7 @@ IMPORTANT: Do not use tool end_call() until all of the customer's questions are 
     # Configure customer agent with different parameters
     customer_config = LLMConfig(
         params={
-            "model": "gpt-4o-mini"
+            "model": "gpt-4o"
         },
         system_prompt="""You are a hungry customer who wants to order food.
 Your tone is casual and excited.

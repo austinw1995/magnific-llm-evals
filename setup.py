@@ -29,4 +29,9 @@ setup(
         "Topic :: Software Development :: Testing :: Unit",
     ],
     python_requires=">=3.8",
+    entry_points={
+        'console_scripts': [
+            'magnific-serve=magnific.cli.serve:main',
+        ],
+    },
 ) 

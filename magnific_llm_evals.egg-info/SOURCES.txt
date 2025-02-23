@@ -1,6 +1,7 @@
 README.md
 setup.py
 magnific/__init__.py
+magnific/api.py
 magnific/conversation.py
 magnific/evaluation.py
 magnific/llm_config.py
@@ -12,5 +13,6 @@ magnific/evaluators/evaluator.py
 magnific_llm_evals.egg-info/PKG-INFO
 magnific_llm_evals.egg-info/SOURCES.txt
 magnific_llm_evals.egg-info/dependency_links.txt
+magnific_llm_evals.egg-info/entry_points.txt
 magnific_llm_evals.egg-info/requires.txt
 magnific_llm_evals.egg-info/top_level.txt

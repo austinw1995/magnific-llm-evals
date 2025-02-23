@@ -87,9 +87,9 @@ export function DataTable({ data, onFileUpload }: DataTableProps) {
               <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                 Transcript
               </th>
-              {data[0]?.evaluation_results.map((_, index) => (
-                <th key={index} className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                  Score {index + 1}
+              {data[0]?.evaluation_results.map((result) => (
+                <th key={result.name} className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                  {result.name} Score
                 </th>
               ))}
             </tr>
@@ -119,8 +119,8 @@ export function DataTable({ data, onFileUpload }: DataTableProps) {
                     )}
                   </pre>
                 </td>
-                {row.evaluation_results.map((result, index) => (
-                  <td key={index} className="px-6 py-4 whitespace-nowrap text-sm">
+                {row.evaluation_results.map((result) => (
+                  <td key={result.name} className="px-6 py-4 whitespace-nowrap text-sm">
                     {result.score.toFixed(2)}
                   </td>
                 ))}
