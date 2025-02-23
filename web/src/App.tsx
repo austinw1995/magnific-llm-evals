@@ -16,6 +16,7 @@ function App() {
 
   const [isLoading, setIsLoading] = useState(false);
   const [testResults, setTestResults] = useState<TestResult[]>([]);
+  const [isSyntheticLoading, setIsSyntheticLoading] = useState(false);
 
   const handleSave = () => {
     // TODO: Implement save functionality
@@ -77,6 +78,73 @@ function App() {
     reader.readAsText(file);
   };
 
+  const handleGenerateSynthetic = async (numTests: number, maxThreads: number) => {
+    setIsSyntheticLoading(true);
+    try {
+      // First generate synthetic data
+      const genResponse = await fetch('http://localhost:8000/api/generate-synthetic', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          service_prompt: config.system_prompt,
+          model: config.params.model,
+          num_tests: numTests,
+          max_threads: maxThreads,
+          temperature: config.params.temperature,
+        }),
+      });
+
+      if (!genResponse.ok) {
+        throw new Error('Failed to generate synthetic data');
+      }
+
+      const genData = await genResponse.json();
+      
+      // Now run tests with the synthetic data
+      const runResponse = await fetch('http://localhost:8000/api/rerun', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          config,
+          test_results: genData.scenarios.map((scenario: any, index: number) => ({
+            test_id: index + 1,
+            call_type: scenario.type,
+            transcript: `Starting ${scenario.type} conversation\n\ncustomer_agent: ${scenario.first_message}`,
+            customer_config: {
+              params: {
+                model: config.params.model,
+                temperature: 0.7,
+              },
+              system_prompt: scenario.customer_prompt,
+              end_call_enabled: true,
+            },
+            // Use the evaluation results from the existing test results
+            evaluation_results: testResults[0]?.evaluation_results || []
+          }))
+        }),
+      });
+
+      if (!runResponse.ok) {
+        throw new Error('Failed to run tests');
+      }
+
+      const runData = await runResponse.json();
+      const testsArray = Object.values(runData.results) as TestResult[];
+      setTestResults(testsArray);
+
+      alert('Synthetic data generated and tests completed successfully');
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Failed to generate synthetic data or run tests');
+    } finally {
+      setIsSyntheticLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 p-8">
       <div className="max-w-7xl mx-auto">
@@ -87,7 +155,9 @@ function App() {
           onConfigChange={setConfig}
           onSave={handleSave}
           onRun={handleRun}
+          onGenerateSynthetic={handleGenerateSynthetic}
           isLoading={isLoading}
+          isSyntheticLoading={isSyntheticLoading}
         />
 
         <DataTable

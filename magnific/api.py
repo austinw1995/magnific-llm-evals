@@ -1,9 +1,10 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import List, Dict, Any
 
 from magnific import LLMConfig, OpenAIProvider, LLMConversation, TestRunner, Evaluation
+from magnific.synthetic_data import SyntheticDataGenerator, SyntheticDataConfig
 
 app = FastAPI()
 
@@ -19,6 +20,13 @@ app.add_middleware(
 class RerunRequest(BaseModel):
     config: Dict[str, Any]
     test_results: List[Dict[str, Any]]
+
+class GenerateSyntheticDataRequest(BaseModel):
+    service_prompt: str
+    model: str
+    num_tests: int = Field(default=5, le=100)  # Limit to 100 tests max
+    max_threads: int = Field(default=5, le=10)  # Limit to 10 threads max
+    temperature: float = Field(default=0.8, ge=0, le=2.0)
 
 @app.post("/api/rerun")
 async def rerun_evaluations(request: RerunRequest):
@@ -63,5 +71,30 @@ async def rerun_evaluations(request: RerunRequest):
     except Exception as e:
         import traceback
         print(f"Error in rerun_evaluations: {str(e)}")
+        print(traceback.format_exc())
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/api/generate-synthetic")
+async def generate_synthetic_data(request: GenerateSyntheticDataRequest):
+    try:
+        config = SyntheticDataConfig(
+            service_prompt=request.service_prompt,
+            model=request.model,
+            num_tests=request.num_tests,
+            max_threads=request.max_threads,
+            temperature=request.temperature
+        )
+        
+        generator = SyntheticDataGenerator(config)
+        scenarios = await generator.generate()
+        
+        return {
+            "success": True,
+            "scenarios": scenarios
+        }
+        
+    except Exception as e:
+        import traceback
+        print(f"Error generating synthetic data: {str(e)}")
         print(traceback.format_exc())
         raise HTTPException(status_code=500, detail=str(e)) 

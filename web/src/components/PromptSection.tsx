@@ -1,5 +1,5 @@
-import React from 'react';
-import { Save, Play } from 'lucide-react';
+import React, { useState } from 'react';
+import { Save, Play, Database } from 'lucide-react';
 import { ModelConfig } from '../types';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,10 +11,23 @@ interface PromptSectionProps {
   onConfigChange: (config: ModelConfig) => void;
   onSave: () => void;
   onRun: () => void;
+  onGenerateSynthetic: (numTests: number, maxThreads: number) => void;
   isLoading: boolean;
+  isSyntheticLoading: boolean;
 }
 
-export function PromptSection({ config, onConfigChange, onSave, onRun, isLoading }: PromptSectionProps) {
+export function PromptSection({ 
+  config, 
+  onConfigChange, 
+  onSave, 
+  onRun, 
+  onGenerateSynthetic,
+  isLoading,
+  isSyntheticLoading 
+}: PromptSectionProps) {
+  const [numTests, setNumTests] = useState(5);
+  const [maxThreads, setMaxThreads] = useState(5);
+
   return (
     <div className="bg-card text-card-foreground rounded-lg shadow-sm border p-6 mb-6">
       <div className="space-y-4">
@@ -67,6 +80,29 @@ export function PromptSection({ config, onConfigChange, onSave, onRun, isLoading
           />
         </div>
 
+        <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label>Number of Test Cases</Label>
+            <Input
+              type="number"
+              value={numTests}
+              onChange={(e) => setNumTests(parseInt(e.target.value))}
+              min={1}
+              max={100}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Max Threads</Label>
+            <Input
+              type="number"
+              value={maxThreads}
+              onChange={(e) => setMaxThreads(parseInt(e.target.value))}
+              min={1}
+              max={10}
+            />
+          </div>
+        </div>
+
         <div className="flex justify-end space-x-4">
           <Button
             variant="outline"
@@ -76,8 +112,16 @@ export function PromptSection({ config, onConfigChange, onSave, onRun, isLoading
             Save
           </Button>
           <Button
+            variant="outline"
+            onClick={() => onGenerateSynthetic(numTests, maxThreads)}
+            disabled={isSyntheticLoading || isLoading}
+          >
+            <Database className="w-4 h-4 mr-2" />
+            {isSyntheticLoading ? 'Generating...' : 'Generate Synthetic Data'}
+          </Button>
+          <Button
             onClick={onRun}
-            disabled={isLoading}
+            disabled={isLoading || isSyntheticLoading}
           >
             <Play className="w-4 h-4 mr-2" />
             {isLoading ? 'Running...' : 'Re-Run Evaluation'}
